@@ -1,6 +1,6 @@
 # Установка и запуск
 ```bash
-cd docker && docker-compose up -d
+docker-compose up -d
 ```
 
 Postgresql:
@@ -13,7 +13,10 @@ PgAdmin:
 - password: `password`
 - host_port: `http://localhost:5050/`
 
+Redis:
+- post: 6379
+
 # Остановка сервисов
 ```bash
-cd docker && docker-compose stop
+docker-compose stop
 ```
