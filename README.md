@@ -20,6 +20,32 @@
 
 ![Figma](https://img.shields.io/badge/figma-%23F24E1E.svg?style=for-the-badge&logo=figma&logoColor=white)
 ![Notion](https://img.shields.io/badge/Notion-%23000000.svg?style=for-the-badge&logo=notion&logoColor=white)
+
+### Установка и запуск
+docker-compose up -d
+Postgresql:
+
+user: postgres
+
+password: fghjkl5678
+
+host_port: localhost:5432
+
+### PgAdmin:
+
+user: admin@admin.ru
+
+password: password
+
+host_port: http://localhost:5050/
+
+Redis:
+
+post: 6379
+### Остановка сервисов
+docker-compose stop
+
+
 ### Как запустить проект:
 
 Клонировать репозиторий и перейти в него в командной строке:
@@ -85,9 +111,9 @@ class Subject:
 
 ```
 class User(AbstractUser):
-    """
-    Базовая модель для описания ученика и учителя.
-    """
+ """
+ Базовая модель для описания ученика и учителя.
+ """
     Поля:
     
     id - первичный ключ
@@ -114,43 +140,38 @@ class User(AbstractUser):
     Сортировка по фамилии и имени.
     
     
-    class Student:
-    """
-    Расширение модели User для модели Студента
-    """
+ class Student:
+ """
+ Расширение модели User для модели Студента
+ """
     
     profile - профайл
     (связь OneToOneField)
     
-    
-    class Student:
-    """
-    Расширение модели User для модели Студента
-    """
-    
-    profile - профайл
-    (OneToOneField связь с таблицей User)
-    
-    class Teacher:
-    """
-    Расширение модели User для модели Учитель
-    """
+        
+ class Teacher:
+ """
+ Расширение модели User для модели Учитель
+ """
     profile-профайл
     (OneToOneField связь с таблицей User)
+    
+    subjects - связь с таблицей Subjects
+    (ManyToManyField)
                                    
     students-связь с таблицей Students
     (ManyToManyField связь через таблицу TeacherStudent)
     
-    subjects - связь с таблицей Subjects
-    (ManyToManyField)
     
-    class TeacherStudent:
-    """
-    Модель-связь преподавателя со студентом.
-    Предоставляет возможность самостоятельной регистрации ученика учителем.
-    """
+ class TeacherStudent:
+ """
+ Модель-связь преподавателя со студентом.
+ Предоставляет возможность самостоятельной регистрации
+ ученика учителем.
+ """
     teacher - связь с таблицей Teacher 
     (ForeignKey)
+    
     student - связь с таблицей Student
     (ForeignKey)
         
@@ -170,24 +191,72 @@ class User(AbstractUser):
     (обязательное текстовое поле)
 
 ```
-Materials
+Модель Materials
 ```
-p 
+"""
+Модель для создания приватных и публичных учебных материлов.
+Возможна организация рассылок.
+""" 
+    teacher - связь с таблицей Teacher 
+    (ForeignKey)
+    
+    subject - связь с таблицей Subject
+    (ForeignKey)
+    
+    file - файл
+    (необязательное поле FileField)
+    
+    text - текстовое поле
+    (необязательное поле TextField)
+    
+    type - текстовое поле с возможностью выбора типа (публичный или приватный) материала
+    (обязательное поле CharField длиной не более 10 и со значением по умолчанию Private)   
 ```
-Homeworks
+Модель Homeworks
 ```
-p
+"""
+Модель для описания домашних занятий.
+"""
+    title - заголовок домашнего задания
+    (обязательное текстовое поле TextField)
+    
+    text - текст домашнего задания
+    (обязательное текстовое поле TextField)
+    
+    comment - комментарий к домашнему заданию
+    (необязательное текстовое поле TextField)    
 ```
-
+Модель Lessons
 ```
-p
-```
-
-
-Lessons
-
-```
-p
+"""
+Модель для урока
+"""
+    teacher - связь с таблицей Teacher 
+    (ForeignKey)
+    
+    teacher_student - связь с таблицей Teacher_Student
+    (ForeignKey)
+    
+    subject - связь с таблицей Subject
+    (ForeignKey)
+    
+    date - дата урока
+    (обязательное поле типа DateTimeField)
+    
+    start_time - время начало урока
+    (обязательное поле типа TimeField)
+    
+    end_time - время окончания урока
+    (обязательное поле типа TimeField)
+    
+    topic - тема урока
+    (необязательное поле TextField длиной не более 40)
+    
+    comment - комментарий к уроку
+    (необязательное поле TextField)
+    
+    homework - домашнее задание к уроку
+    (OneToOneField)
 ```
 
 
