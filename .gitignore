@@ -2,5 +2,5 @@
 .venv
 .idea
 *.pyc
+.env
 *.txt
-core/core/.env
