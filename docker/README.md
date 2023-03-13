@@ -1,6 +1,9 @@
 # Установка и запуск
+1. Скопировать `.env.example` в `.env`
+2. Добавить ключ приложения  `SECRET_KEY=` в `.env`
+3. Запустить `docker-compose`
 ```bash
-cd docker && docker-compose up -d
+docker-compose up -d
 ```
 
 Postgresql:
@@ -15,5 +18,5 @@ PgAdmin:
 
 # Остановка сервисов
 ```bash
-cd docker && docker-compose stop
+docker-compose stop
 ```

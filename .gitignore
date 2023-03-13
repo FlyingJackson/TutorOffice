@@ -1,6 +1,7 @@
 # created by virtualenv automatically
 .venv
 .idea
+.vscode
 *.pyc
 *.txt
-core/core/.env
+.env
