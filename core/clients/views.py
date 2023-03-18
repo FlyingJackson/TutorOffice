@@ -4,17 +4,17 @@ from rest_framework.mixins import CreateModelMixin
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
 from rest_framework.response import Response
-from .serializers import RegisterSerializer
+from .serializers import RegisterSerializer, SubjectSerializer
 from rest_framework import status
 from .services import Email
-from .models import User
+from .models import User, Subject, Teacher
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.exceptions import TokenError
 from rest_framework_simplejwt.views import TokenObtainPairView
 from django.contrib.auth.views import PasswordResetView, PasswordResetConfirmView
 from django.conf import settings
 from django.core.mail import send_mail
-# Create your views here.
+from rest_framework import viewsets
 
 
 class RegisterView(CreateModelMixin, GenericViewSet):
@@ -92,6 +92,7 @@ class CustomPasswordResetConfirmView(PasswordResetConfirmView):
     Стандартный класс django для обработки
     новых паролей пользователя
     """
+
     # template_name = 'reset.html' добавить кнопку-ссылку по ТЗ
 
     def form_valid(self, form):
@@ -107,3 +108,10 @@ class CustomPasswordResetConfirmView(PasswordResetConfirmView):
             fail_silently=False,
         )
         return response
+
+
+class SubjectView(viewsets.ModelViewSet):
+    queryset = Subject.objects.all()
+    serializer_class = SubjectSerializer
+
+

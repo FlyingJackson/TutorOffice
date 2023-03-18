@@ -10,6 +10,7 @@ from django.contrib.auth.views import (
 
 router = routers.DefaultRouter()
 router.register('register', RegisterView, basename='register')
+router.register('subjects', SubjectView, basename='subjects')
 
 urlpatterns = [
     path('', include(router.urls)),
@@ -32,4 +33,7 @@ urlpatterns = [
     path('password-reset/complete/',
          PasswordResetCompleteView.as_view(),
          name='password_reset_complete'),
+    path('subjects/',
+         SubjectView.as_view,
+         name='subjects')
 ]
