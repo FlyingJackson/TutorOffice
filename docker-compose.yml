@@ -6,15 +6,15 @@ services:
     container_name: postgres
     image: postgres:15
     environment:
-      POSTGRES_USER: ${DB_USER}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
-      POSTGRES_DB: ${DB_NAME}
-      POSTGRES_HOST: ${DB_HOST}
-      PGDATA: /data/postgres
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-fghjkl5678}
+      POSTGRES_DB: ${POSTGRES_DB:-db}
+      POSTGRES_HOST: ${POSTGRES_HOST:-127.0.0.1}
+      PGDATA: ./data/postgres
     volumes:
        - postgres:/data/postgres
     ports:
-      - "${DB_PORT}:5432"
+      - "${POSTGRES_PORT:-5432}:5432"
     networks:
       - postgres
     restart: unless-stopped
@@ -35,22 +35,20 @@ services:
       - postgres
     restart: unless-stopped
 
-
   redis:
-    image: redis:7-alpine3.17
+    image: redis:7
     container_name: redis
     restart: always
     ports:
-      - "${REDIS_PORT:-6379}:6379"
+      - '6379:6379'
     volumes:
       - redis:/var/lib/redis
-
 
 networks:
   postgres:
     driver: bridge
 
 volumes:
-    redis:
-    pgadmin:
-    postgres:
+  postgres:
+  pgadmin:
+  redis:
