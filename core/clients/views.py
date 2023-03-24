@@ -4,8 +4,8 @@ from rest_framework.mixins import CreateModelMixin
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
 from rest_framework.response import Response
-from .serializers import RegisterSerializer, SubjectSerializer
-from rest_framework import status
+from .serializers import RegisterSerializer, SubjectSerializer, ChangePasswordSerializer
+from rest_framework import status, generics, permissions
 from .services import Email
 from .models import User, Subject, Teacher
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -110,8 +110,18 @@ class CustomPasswordResetConfirmView(PasswordResetConfirmView):
         return response
 
 
+class CustomChangePasswordView(generics.UpdateAPIView):
+    serializer_class = ChangePasswordSerializer
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def update(self, request, *args, **kwargs):
+        serializer = ChangePasswordSerializer(instance=self.request.user, data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 class SubjectView(viewsets.ModelViewSet):
     queryset = Subject.objects.all()
     serializer_class = SubjectSerializer
-
-

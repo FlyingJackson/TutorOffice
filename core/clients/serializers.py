@@ -65,7 +65,38 @@ class RegisterSerializer(serializers.ModelSerializer):
         return user
 
 
-# Subject
+class ChangePasswordSerializer(serializers.ModelSerializer):
+    old_password = serializers.CharField(required=True, write_only=True)
+    new_password = serializers.CharField(required=True, write_only=True)
+    repeat_password = serializers.CharField(required=True, write_only=True)
+
+    def update(self, instance, validated_data):
+
+        instance.password = validated_data.get('password', instance.password)
+
+        if not validated_data['new_password']:
+            raise serializers.ValidationError({'new_password': 'Не найдено'})
+
+        if not validated_data['old_password']:
+            raise serializers.ValidationError({'old_password': 'Не найдено'})
+
+        if not instance.check_password(validated_data['old_password']):
+            raise serializers.ValidationError({'old_password': 'Неправильный пароль'})
+
+        if validated_data['new_password'] != validated_data['repeat_password']:
+            raise serializers.ValidationError({'passwords': 'Пароли не совпадают'})
+
+        if validated_data['new_password'] == validated_data['repeat_password'] and instance.check_password(
+                validated_data['old_password']):
+            instance.set_password(validated_data['new_password'])
+            instance.save()
+
+            return instance
+
+    class Meta:
+        model = User
+        fields = ['old_password', 'new_password', 'repeat_password']
+
 
 class SubjectSerializer(serializers.ModelSerializer):
     class Meta:

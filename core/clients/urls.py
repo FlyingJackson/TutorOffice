@@ -35,5 +35,8 @@ urlpatterns = [
          name='password_reset_complete'),
     path('subjects/',
          SubjectView.as_view,
-         name='subjects')
+         name='subjects'),
+    path('change-password/',
+         CustomChangePasswordView.as_view(),
+         name='change-password'),
 ]
