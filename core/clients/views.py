@@ -111,6 +111,9 @@ class CustomPasswordResetConfirmView(PasswordResetConfirmView):
 
 
 class CustomChangePasswordView(generics.UpdateAPIView):
+    """
+    Изменить пароль через
+    """
     serializer_class = ChangePasswordSerializer
     permission_classes = (permissions.IsAuthenticated,)
 
